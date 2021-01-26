@@ -20,14 +20,19 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
-<meta property="og:title" content="497.md">
+  <meta name="description" content="题目给定一个非重叠轴对齐矩形的列表 rects，写一个函数 pick 随机均匀地选取矩形覆盖的空间中的整数点。 提示：  整数点是具有整数坐标的点。 矩形周边上的点包含在矩形覆盖的空间中。 第 i 个矩形 rects [i] &#x3D; [x1，y1，x2，y2]，其中 [x1，y1] 是左下角的整数坐标，[x2，y2] 是右上角的整数坐标。 每个矩形的长度和宽度不超过 2000。 1 &lt;&#x3D; rec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="497.非重叠矩形中的随机点">
 <meta property="og:url" content="http://example.com/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/497-md/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="题目给定一个非重叠轴对齐矩形的列表 rects，写一个函数 pick 随机均匀地选取矩形覆盖的空间中的整数点。 提示：  整数点是具有整数坐标的点。 矩形周边上的点包含在矩形覆盖的空间中。 第 i 个矩形 rects [i] &#x3D; [x1，y1，x2，y2]，其中 [x1，y1] 是左下角的整数坐标，[x2，y2] 是右上角的整数坐标。 每个矩形的长度和宽度不超过 2000。 1 &lt;&#x3D; rec">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-01-26T06:42:02.000Z">
-<meta property="article:modified_time" content="2021-01-26T06:42:02.517Z">
+<meta property="article:modified_time" content="2021-01-26T07:38:56.692Z">
 <meta property="article:author" content="Huangscar">
+<meta property="article:tag" content="二分查找">
+<meta property="article:tag" content="随机">
+<meta property="article:tag" content="c++11新特性">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/497-md/">
@@ -43,7 +48,7 @@
   };
 </script>
 
-  <title>497.md | Hexo</title>
+  <title>497.非重叠矩形中的随机点 | Hexo</title>
   
 
 
@@ -171,7 +176,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          497.md
+          497.非重叠矩形中的随机点
         </h1>
 
         <div class="post-meta">
@@ -180,8 +185,22 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-01-26 14:42:02" itemprop="dateCreated datePublished" datetime="2021-01-26T14:42:02+08:00">2021-01-26</time>
+              <time title="Created: 2021-01-26 14:42:02 / Modified: 15:38:56" itemprop="dateCreated datePublished" datetime="2021-01-26T14:42:02+08:00">2021-01-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+                </span>
             </span>
 
           
@@ -195,7 +214,42 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>给定一个非重叠轴对齐矩形的列表 rects，写一个函数 pick 随机均匀地选取矩形覆盖的空间中的整数点。</p>
+<p>提示：</p>
+<ol>
+<li>整数点是具有整数坐标的点。</li>
+<li>矩形周边上的点包含在矩形覆盖的空间中。</li>
+<li>第 i 个矩形 rects [i] = [x1，y1，x2，y2]，其中 [x1，y1] 是左下角的整数坐标，[x2，y2] 是右上角的整数坐标。</li>
+<li>每个矩形的长度和宽度不超过 2000。</li>
+<li>1 &lt;= rects.length &lt;= 100</li>
+<li>pick 以整数坐标数组 [p_x, p_y] 的形式返回一个点。</li>
+<li>pick 最多被调用10000次。</li>
+</ol>
+<a id="more"></a>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">[&quot;Solution&quot;,&quot;pick&quot;,&quot;pick&quot;,&quot;pick&quot;]</span><br><span class="line">[[[[1,1,5,5]]],[],[],[]]</span><br><span class="line">输出: </span><br><span class="line">[null,[4,1],[4,1],[3,3]]</span><br></pre></td></tr></table></figure>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">输入: </span><br><span class="line">[&quot;Solution&quot;,&quot;pick&quot;,&quot;pick&quot;,&quot;pick&quot;,&quot;pick&quot;,&quot;pick&quot;]</span><br><span class="line">[[[[-2,-2,-1,-1],[1,0,3,0]]],[],[],[],[],[]]</span><br><span class="line">输出: </span><br><span class="line">[null,[-1,-2],[2,0],[-2,-1],[3,0],[-2,-2]]</span><br></pre></td></tr></table></figure>
+<h2 id="类别"><a href="#类别" class="headerlink" title="类别"></a>类别</h2><p><code>二分查找</code> <code>随机</code></p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><p>这题用到了c++11的随机数的内容（mt19937随机数）</p>
+<p>mt19937是一种随机数算法</p>
+<p>定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">mt19937 <span class="title">rnd</span><span class="params">(random_device&#123;&#125;())</span></span>;</span><br></pre></td></tr></table></figure>
+<p>概率分布类型：</p>
+<p>均匀分布：</p>
+<p>​    uniform_int_distribution     整数均匀分布</p>
+<p>​    uniform_real_distribution    浮点数均匀分布</p>
+<p>伯努利类型分布：（仅有yes/no两种结果，概率一个p，一个1-p）</p>
+<p>​    bernoulli_distribution  伯努利分布</p>
+<p>​    binomial_distribution   二项分布</p>
+<p>​    geometry_distribution  几何分布</p>
+<p>​    negative_biomial_distribution 负二项分布</p>
+<p>定义：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uniform_int_distribution&lt;<span class="keyword">int</span>&gt; uni;</span><br></pre></td></tr></table></figure>
+<p>定义范围：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">uni = uniform_int_distribution&lt;<span class="keyword">int</span>&gt;&#123;<span class="number">0</span>, pointsNum - <span class="number">1</span>&#125;;</span><br></pre></td></tr></table></figure>
+<p>取随机数：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> pointIndex = uni(rnd);</span><br></pre></td></tr></table></figure>
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; rects;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; points;</span><br><span class="line">    <span class="keyword">int</span> pointsNum;</span><br><span class="line">    <span class="comment">// unsigned seed1 = std::chrono::system_clock::now().time_since_epoch().count();</span></span><br><span class="line">    mt19937 rnd&#123;random_device&#123;&#125;()&#125;;</span><br><span class="line">    uniform_int_distribution&lt;<span class="keyword">int</span>&gt; uni;</span><br><span class="line">    </span><br><span class="line"></span><br><span class="line">    Solution(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt;&amp; rects) &#123;</span><br><span class="line">        <span class="keyword">this</span>-&gt;rects = rects;</span><br><span class="line">        pointsNum = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rects.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">int</span> num = (rects[i][<span class="number">2</span>] - rects[i][<span class="number">0</span>] + <span class="number">1</span>) * (rects[i][<span class="number">3</span>] - rects[i][<span class="number">1</span>] + <span class="number">1</span>);</span><br><span class="line">            pointsNum += num;</span><br><span class="line">            points.push_back(num);</span><br><span class="line">        &#125;</span><br><span class="line">        uni = uniform_int_distribution&lt;<span class="keyword">int</span>&gt;&#123;<span class="number">0</span>, pointsNum - <span class="number">1</span>&#125;;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">pick</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> pointIndex = uni(rnd);</span><br><span class="line">        <span class="keyword">int</span> rectIndex = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; rects.size(); i++) &#123;</span><br><span class="line">            <span class="keyword">if</span>(pointIndex &gt;= points[i]) &#123;</span><br><span class="line">                pointIndex -= points[i];</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">else</span> &#123;</span><br><span class="line">                rectIndex = i;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result;</span><br><span class="line">        <span class="keyword">int</span> x = pointIndex % (rects[rectIndex][<span class="number">2</span>] - rects[rectIndex][<span class="number">0</span>] + <span class="number">1</span>) + rects[rectIndex][<span class="number">0</span>];</span><br><span class="line">        <span class="keyword">int</span> y = pointIndex / (rects[rectIndex][<span class="number">2</span>] - rects[rectIndex][<span class="number">0</span>] + <span class="number">1</span>) + rects[rectIndex][<span class="number">1</span>];</span><br><span class="line">        result.push_back(x);</span><br><span class="line">        result.push_back(y);</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Your Solution object will be instantiated and called as such:</span></span><br><span class="line"><span class="comment"> * Solution* obj = new Solution(rects);</span></span><br><span class="line"><span class="comment"> * vector&lt;int&gt; param_1 = obj-&gt;pick();</span></span><br><span class="line"><span class="comment"> */</span></span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -203,6 +257,11 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" rel="tag"># 二分查找</a>
+              <a href="/tags/%E9%9A%8F%E6%9C%BA/" rel="tag"># 随机</a>
+              <a href="/tags/c-11%E6%96%B0%E7%89%B9%E6%80%A7/" rel="tag"># c++11新特性</a>
+          </div>
 
         
 
@@ -210,12 +269,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/421-md/" rel="prev" title="421.md">
-      <i class="fa fa-chevron-left"></i> 421.md
+    <a href="/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/421-md/" rel="prev" title="421.数组中两个数最大异或值">
+      <i class="fa fa-chevron-left"></i> 421.数组中两个数最大异或值
     </a></div>
       <div class="post-nav-item">
-    <a href="/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/967-md/" rel="next" title="967.md">
-      967.md <i class="fa fa-chevron-right"></i>
+    <a href="/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/967-md/" rel="next" title="967.连续差相同的数字">
+      967.连续差相同的数字 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -275,6 +334,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">1.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="nav-number">1.2.</span> <span class="nav-text">示例2</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B1%BB%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">类别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">代码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -301,7 +361,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -383,6 +443,8 @@
 
 
 
+
+  
 
   
 

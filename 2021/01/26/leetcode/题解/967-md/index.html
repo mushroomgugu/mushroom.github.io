@@ -20,14 +20,18 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta property="og:type" content="article">
-<meta property="og:title" content="967.md">
+  <meta name="description" content="题目返回所有长度为 N 且满足其每两个连续位上的数字之间的差的绝对值为 K 的非负整数。 请注意，除了数字 0 本身之外，答案中的每个数字都不能有前导零。例如，01 因为有一个前导零，所以是无效的；但 0 是有效的。 你可以按任何顺序返回答案。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="967.连续差相同的数字">
 <meta property="og:url" content="http://example.com/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/967-md/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="题目返回所有长度为 N 且满足其每两个连续位上的数字之间的差的绝对值为 K 的非负整数。 请注意，除了数字 0 本身之外，答案中的每个数字都不能有前导零。例如，01 因为有一个前导零，所以是无效的；但 0 是有效的。 你可以按任何顺序返回答案。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-01-26T06:42:11.000Z">
-<meta property="article:modified_time" content="2021-01-26T06:42:11.234Z">
+<meta property="article:modified_time" content="2021-01-26T07:38:22.630Z">
 <meta property="article:author" content="Huangscar">
+<meta property="article:tag" content="深度优先搜索">
+<meta property="article:tag" content="广度优先搜索">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/967-md/">
@@ -43,7 +47,7 @@
   };
 </script>
 
-  <title>967.md | Hexo</title>
+  <title>967.连续差相同的数字 | Hexo</title>
   
 
 
@@ -171,7 +175,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          967.md
+          967.连续差相同的数字
         </h1>
 
         <div class="post-meta">
@@ -180,8 +184,22 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
+              
 
-              <time title="Created: 2021-01-26 14:42:11" itemprop="dateCreated datePublished" datetime="2021-01-26T14:42:11+08:00">2021-01-26</time>
+              <time title="Created: 2021-01-26 14:42:11 / Modified: 15:38:22" itemprop="dateCreated datePublished" datetime="2021-01-26T14:42:11+08:00">2021-01-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/" itemprop="url" rel="index"><span itemprop="name">leetcode</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/leetcode/%E9%A2%98%E8%A7%A3/" itemprop="url" rel="index"><span itemprop="name">题解</span></a>
+                </span>
             </span>
 
           
@@ -195,7 +213,23 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        
+        <h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>返回所有长度为 N 且满足其每两个连续位上的数字之间的差的绝对值为 K 的非负整数。</p>
+<p>请注意，除了数字 0 本身之外，答案中的每个数字都不能有前导零。例如，01 因为有一个前导零，所以是无效的；但 0 是有效的。</p>
+<p>你可以按任何顺序返回答案。</p>
+<a id="more"></a>
+<h3 id="示例1"><a href="#示例1" class="headerlink" title="示例1"></a>示例1</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输入：N &#x3D; 3, K &#x3D; 7</span><br><span class="line">输出：[181,292,707,818,929]</span><br><span class="line">解释：注意，070 不是一个有效的数字，因为它有前导零。</span><br></pre></td></tr></table></figure>
+<h3 id="示例2"><a href="#示例2" class="headerlink" title="示例2"></a>示例2</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：N &#x3D; 2, K &#x3D; 1</span><br><span class="line">输出：[10,12,21,23,32,34,43,45,54,56,65,67,76,78,87,89,98]</span><br></pre></td></tr></table></figure>
+<h3 id="提示"><a href="#提示" class="headerlink" title="提示"></a>提示</h3><ol>
+<li><code>1 &lt;= N &lt;= 9</code></li>
+<li><code>0 &lt;= K &lt;= 9</code></li>
+</ol>
+<h2 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h2><p><code>深度优先搜索</code> <code>广度优先搜索</code></p>
+<h2 id="题解"><a href="#题解" class="headerlink" title="题解"></a>题解</h2><ol>
+<li>把N=1和K=0的情况分出来</li>
+<li>对于数字1-9开始进行递归，对于[上一个加入的数字]+K<10的和[上一个加入的数字]-K>=0的情况进入递归</li>
+</ol>
+<h2 id="解答"><a href="#解答" class="headerlink" title="解答"></a>解答</h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Solution</span> &#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">getNum</span><span class="params">(<span class="keyword">int</span> num, <span class="keyword">int</span> K, <span class="keyword">int</span> i, <span class="keyword">int</span> j, <span class="keyword">int</span> N, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;result)</span> </span>&#123;</span><br><span class="line">        num *= <span class="number">10</span>;</span><br><span class="line">        num += i;</span><br><span class="line">        j++;</span><br><span class="line">        <span class="keyword">if</span>(j &lt; N) &#123;</span><br><span class="line">            <span class="keyword">if</span>(i+K &lt; <span class="number">10</span>) &#123;</span><br><span class="line">                <span class="comment">// cout &lt;&lt; num &lt;&lt; &quot; &quot; &lt;&lt; i+K &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; endl;</span></span><br><span class="line">                getNum(num, K, i+K, j, N, result);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span>(i-K &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="comment">// cout &lt;&lt; num &lt;&lt; &quot; &quot; &lt;&lt; i-K &lt;&lt; &quot; &quot; &lt;&lt; j &lt;&lt; endl;</span></span><br><span class="line">                getNum(num, K, i-K, j, N, result);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// cout &lt;&lt; num &lt;&lt; endl;</span></span><br><span class="line">            result.push_back(num);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">numsSameConsecDiff</span><span class="params">(<span class="keyword">int</span> N, <span class="keyword">int</span> K)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(N == <span class="number">1</span>) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result1;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">                result1.push_back(i);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> result1;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span>(K == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result2;</span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">                <span class="keyword">int</span> num3 = <span class="number">0</span>;</span><br><span class="line">                <span class="keyword">for</span>(<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; N; j++) &#123;</span><br><span class="line">                    num3 *= <span class="number">10</span>;</span><br><span class="line">                    num3 += i;</span><br><span class="line">                &#125;</span><br><span class="line">                result2.push_back(num3);</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> result2;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; result;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span>; i &lt; <span class="number">10</span>; i++) &#123;</span><br><span class="line">            getNum(<span class="number">0</span>, K, i, <span class="number">0</span>, N, result);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
     </div>
 
     
@@ -203,6 +237,10 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" rel="tag"># 深度优先搜索</a>
+              <a href="/tags/%E5%B9%BF%E5%BA%A6%E4%BC%98%E5%85%88%E6%90%9C%E7%B4%A2/" rel="tag"># 广度优先搜索</a>
+          </div>
 
         
 
@@ -210,8 +248,8 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/497-md/" rel="prev" title="497.md">
-      <i class="fa fa-chevron-left"></i> 497.md
+    <a href="/2021/01/26/leetcode/%E9%A2%98%E8%A7%A3/497-md/" rel="prev" title="497.非重叠矩形中的随机点">
+      <i class="fa fa-chevron-left"></i> 497.非重叠矩形中的随机点
     </a></div>
       <div class="post-nav-item"></div>
     </div>
@@ -272,6 +310,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E7%9B%AE"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B1"><span class="nav-number">1.1.</span> <span class="nav-text">示例1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B2"><span class="nav-number">1.2.</span> <span class="nav-text">示例2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%90%E7%A4%BA"><span class="nav-number">1.3.</span> <span class="nav-text">提示</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%A2%98%E8%A7%A3"><span class="nav-number">3.</span> <span class="nav-text">题解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%A7%A3%E7%AD%94"><span class="nav-number">4.</span> <span class="nav-text">解答</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -298,7 +337,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -380,6 +419,8 @@
 
 
 
+
+  
 
   
 

@@ -20,15 +20,15 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="一、各种结构 没有分号 有大括号 条件结构的else需要和右大括号同一行  二、运算符（一）三元运算符 go是没有三元运算符:?的，因此如果需要用到三元运算符，只能自己构造函数。  对于单纯的max和min，可以在包pkg里面找到这两个函数，但是只能对于int形式使用。  上一点只能用于整型由于go 不存在范型  如果需要使用范型，可以使用interface&amp;#123;&amp;#125;，这是运行时范型">
+  <meta name="description" content="本文将介绍go语言一些和别的语言不同的特性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go语言特性">
 <meta property="og:url" content="http://example.com/2021/01/26/go/go-features-md/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="一、各种结构 没有分号 有大括号 条件结构的else需要和右大括号同一行  二、运算符（一）三元运算符 go是没有三元运算符:?的，因此如果需要用到三元运算符，只能自己构造函数。  对于单纯的max和min，可以在包pkg里面找到这两个函数，但是只能对于int形式使用。  上一点只能用于整型由于go 不存在范型  如果需要使用范型，可以使用interface&amp;#123;&amp;#125;，这是运行时范型">
+<meta property="og:description" content="本文将介绍go语言一些和别的语言不同的特性">
 <meta property="og:locale">
 <meta property="article:published_time" content="2021-01-26T06:19:42.000Z">
-<meta property="article:modified_time" content="2021-01-26T06:30:40.883Z">
+<meta property="article:modified_time" content="2021-01-26T07:39:51.641Z">
 <meta property="article:author" content="Huangscar">
 <meta name="twitter:card" content="summary">
 
@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-01-26 14:19:42 / Modified: 14:30:40" itemprop="dateCreated datePublished" datetime="2021-01-26T14:19:42+08:00">2021-01-26</time>
+              <time title="Created: 2021-01-26 14:19:42 / Modified: 15:39:51" itemprop="dateCreated datePublished" datetime="2021-01-26T14:19:42+08:00">2021-01-26</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -211,7 +211,9 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h2 id="一、各种结构"><a href="#一、各种结构" class="headerlink" title="一、各种结构"></a>一、各种结构</h2><ol>
+        <p>本文将介绍go语言一些和别的语言不同的特性</p>
+<a id="more"></a>
+<h2 id="一、各种结构"><a href="#一、各种结构" class="headerlink" title="一、各种结构"></a>一、各种结构</h2><ol>
 <li>没有分号</li>
 <li>有大括号</li>
 <li>条件结构的<code>else</code>需要和右大括号同一行</li>
@@ -336,7 +338,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -418,6 +420,8 @@
 
 
 
+
+  
 
   
 
